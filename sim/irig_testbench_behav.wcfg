@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="irig_testbench_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="irig_testbench" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="1154640004333fs"></ZoomStartTime>
+      <ZoomEndTime time="2363133126334fs"></ZoomEndTime>
+      <Cursor1Time time="2161717606000fs"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="175"></NameColumnWidth>
+      <ValueColumnWidth column_width="90"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="19" />
+   <wvobject fp_name="/irig_testbench/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/rst" type="logic">
+      <obj_property name="ElementShortName">rst</obj_property>
+      <obj_property name="ObjectShortName">rst</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/irigb" type="logic">
+      <obj_property name="ElementShortName">irigb</obj_property>
+      <obj_property name="ObjectShortName">irigb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/sys_clk250" type="logic">
+      <obj_property name="ElementShortName">sys_clk250</obj_property>
+      <obj_property name="ObjectShortName">sys_clk250</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/pps" type="logic">
+      <obj_property name="ElementShortName">pps</obj_property>
+      <obj_property name="ObjectShortName">pps</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/ts_second" type="array">
+      <obj_property name="ElementShortName">ts_second[5:0]</obj_property>
+      <obj_property name="ObjectShortName">ts_second[5:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/ts_minute" type="array">
+      <obj_property name="ElementShortName">ts_minute[5:0]</obj_property>
+      <obj_property name="ObjectShortName">ts_minute[5:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/ts_hour" type="array">
+      <obj_property name="ElementShortName">ts_hour[4:0]</obj_property>
+      <obj_property name="ObjectShortName">ts_hour[4:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/ts_day" type="array">
+      <obj_property name="ElementShortName">ts_day[8:0]</obj_property>
+      <obj_property name="ObjectShortName">ts_day[8:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/ts_year" type="array">
+      <obj_property name="ElementShortName">ts_year[6:0]</obj_property>
+      <obj_property name="ObjectShortName">ts_year[6:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/ts_sec_day" type="array">
+      <obj_property name="ElementShortName">ts_sec_day[16:0]</obj_property>
+      <obj_property name="ObjectShortName">ts_sec_day[16:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/state" type="array">
+      <obj_property name="ElementShortName">state[3:0]</obj_property>
+      <obj_property name="ObjectShortName">state[3:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/MARK" type="array">
+      <obj_property name="ElementShortName">MARK[2:0]</obj_property>
+      <obj_property name="ObjectShortName">MARK[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/D1" type="array">
+      <obj_property name="ElementShortName">D1[2:0]</obj_property>
+      <obj_property name="ObjectShortName">D1[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/D0" type="array">
+      <obj_property name="ElementShortName">D0[2:0]</obj_property>
+      <obj_property name="ObjectShortName">D0[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/i_irig_intfc/i_irig_timestamp_vhd/ts_second_out" type="array">
+      <obj_property name="ElementShortName">ts_second_out[5:0]</obj_property>
+      <obj_property name="ObjectShortName">ts_second_out[5:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/i_irig_intfc/i_tick_gen/nsec_cnt_out" type="array">
+      <obj_property name="ElementShortName">nsec_cnt_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">nsec_cnt_out[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/i_irig_intfc/i_tick_gen/usec_cnt_out" type="array">
+      <obj_property name="ElementShortName">usec_cnt_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">usec_cnt_out[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/irig_testbench/i_irig_intfc/i_tick_gen/msec_cnt_out" type="array">
+      <obj_property name="ElementShortName">msec_cnt_out[31:0]</obj_property>
+      <obj_property name="ObjectShortName">msec_cnt_out[31:0]</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>

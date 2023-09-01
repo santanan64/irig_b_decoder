@@ -1,0 +1,160 @@
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.std_logic_arith.all;
+use ieee.std_logic_unsigned.all;
+
+entity irig_intfc is
+  port(
+    clk_in                              : in  std_logic;
+    rst_in                              : in  std_logic;
+    irigb_in                            : in  std_logic;
+    pps_out                             : out std_logic;
+    ts_second_out                       : out std_logic_vector( 5 downto 0);
+    ts_minute_out                       : out std_logic_vector( 5 downto 0);
+    ts_hour_out                         : out std_logic_vector( 4 downto 0);
+    ts_day_out                          : out std_logic_vector( 8 downto 0);
+    ts_year_out                         : out std_logic_vector( 6 downto 0);
+    ts_sec_day_out                      : out std_logic_vector(16 downto 0);
+    ts_nsec_out                         : out std_logic_vector(31 downto 0);
+    ts_usec_out                         : out std_logic_vector(31 downto 0);
+    ts_msec_out                         : out std_logic_vector(31 downto 0)
+    );
+end entity irig_intfc;
+
+architecture imp of irig_intfc is
+
+  signal irig_d0                        : std_logic;
+  signal irig_d1                        : std_logic;
+  signal irig_mark                      : std_logic;
+  signal pps_gate                       : std_logic;
+  signal ts_select                      : std_logic_vector(2 downto 0);
+  signal ts_finish                      : std_logic;
+  signal bit_idx                        : std_logic_vector(4 downto 0);
+  signal digit_idx                      : std_logic_vector(1 downto 0);
+  signal bit_value                      : std_logic;
+  signal state_o                        : std_logic_vector(3 downto 0);
+
+  signal chip_en                        : std_logic;
+  signal pps_r                          : std_logic := '0';
+  signal irigb_r                        : std_logic := '0';
+  
+  signal tick_gen_rst                   : std_logic := '0';   
+  signal pps_r1                         : std_logic := '0';
+  
+begin
+
+  pps_out   <= pps_r;
+
+----------------------------------------------------
+  i_chip_enable_gen : entity work.chip_enable_gen  
+    port map (
+    clk_in                        => clk_in,
+    tick_en_out                   => chip_en, 
+    reset_in                      => rst_in
+    );
+
+----------------------------------------------------
+  -- Decode the IRIG-B width-encoded bits
+  -- into data 0, data 1, and mark signals
+  i_irig_width_decoder : entity work.irig_width_decoder
+    port map (
+      clk_in                      => clk_in,      
+      chip_en_in                  => chip_en,
+      irigb_in                    => irigb_in,    
+
+      irig_mark_out               => irig_mark,
+      irig_d0_out                 => irig_d0,  
+      irig_d1_out                 => irig_d1,  
+
+      rst_in                      => rst_in                          
+      );
+                    
+----------------------------------------------------
+  -- Lock onto and track the IRIG-B "states"
+  -- separated by mark signals.  Grab the BCD and binary
+  -- bit values and send them to the timestamp block.
+  i_irig_state_vhd : entity work.irig_state_vhd
+    port map (
+    clk_in                        => clk_in,
+    chip_en_in                    => chip_en,
+    rst_in                        => rst_in,      
+
+    irig_d0_in                    => irig_d0,  
+    irig_d1_in                    => irig_d1,  
+    irig_mark_in                  => irig_mark,
+
+    pps_gate_out                  => pps_gate, 
+    ts_select_out                 => ts_select,
+    ts_finish_out                 => ts_finish,
+    bit_idx_out                   => bit_idx,  
+    digit_idx_out                 => digit_idx,
+    bit_value_out                 => bit_value,
+    state_out                     => state_o   
+    ); 
+
+----------------------------------------------------
+  -- From the BCD and binary bit values, generate
+  -- the timestamps of the previous whole second
+  i_irig_timestamp_vhd : entity work.irig_timestamp_vhd 
+    port map (
+      clk_in                      => clk_in,        
+      chip_en_in                  => chip_en,
+      rst_in                      => rst_in,        
+
+      bit_idx_in                  => bit_idx,      
+      digit_idx_in                => digit_idx,    
+      bit_value_in                => bit_value,    
+      ts_select_in                => ts_select,    
+      ts_finish_in                => ts_finish,    
+
+      ts_second_out               => ts_second_out,  
+      ts_minute_out               => ts_minute_out,  
+      ts_hour_out                 => ts_hour_out,    
+      ts_day_out                  => ts_day_out,     
+      ts_year_out                 => ts_year_out,    
+      ts_sec_day_out              => ts_sec_day_out  
+      );
+
+----------------------------------------------------
+  -- PPS signal is generated by gating the IRIG signal
+  -- during the start marker.  
+  process(clk_in)
+  begin
+    if (rising_edge(clk_in)) then
+      if (chip_en = '1') then
+        if (irigb_in = '1') then
+          irigb_r           <= '1';
+        else
+          irigb_r           <= '0';
+        end if;
+      end if;
+
+      if (chip_en = '1') then
+        if (irigb_in = '1' and irigb_r = '0' and pps_gate = '1') then
+          pps_r             <= '1';
+        else
+          pps_r             <= '0';
+        end if;
+      else
+        pps_r               <= '0';
+      end if;
+    end if;
+  end process;
+
+----------------------------------------------------
+  tick_gen_rst <= rst_in or pps_r;
+
+  i_tick_gen : entity work.tick_gen
+    generic map (
+      CLOCK_SPEED_MHZ             => 250
+      )
+    port map (
+      clk_in                      => clk_in,
+      nsec_cnt_out                => ts_nsec_out,
+      usec_cnt_out                => ts_usec_out,
+      msec_cnt_out                => ts_msec_out,
+
+      reset_in                    => tick_gen_rst    
+    );
+
+end architecture imp;
